@@ -12,14 +12,13 @@ public class ContainPlayer : MonoBehaviour
     void Start()
     {
         cubeMeshRenderer = cube.GetComponent<MeshRenderer>();
-        if(_containedPlayer != null){
-            _isContainingPlayer = true;
+        if(_isContainingPlayer == true || _containedPlayer != null){
             ChangeMaterial(_containedPlayer);
         }
     }
 
 
     public void ChangeMaterial(Player player){
-        cubeMeshRenderer.material = player.Material;
+        //cubeMeshRenderer.material = player.Material;
     }
 }
