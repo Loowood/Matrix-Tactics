@@ -41,11 +41,11 @@ public class MatrixManager : MonoBehaviour
                     Vector3 currCoords = new Vector3(x * 2, y * 2, z * 2);
                     if ((x + y + z) % 2 == 0)
                     {
-                        matrix[x][y].Add(Instantiate(faceCube, currCoords, Quaternion.identity, matrixHolder));
+                        matrix[x][y].Add(CreateCubes(faceCube, currCoords, matrixHolder, x, y, z));
                     }
                     else
                     {
-                        matrix[x][y].Add(Instantiate(vertexCube, currCoords, Quaternion.identity, matrixHolder));
+                        matrix[x][y].Add(CreateCubes(vertexCube, currCoords, matrixHolder, x, y, z));
                     }
                 }
             }
@@ -58,5 +58,14 @@ public class MatrixManager : MonoBehaviour
         {
             Destroy(cube.gameObject);
         }
+    }
+
+    private GameObject CreateCubes(GameObject cubePrefab, Vector3 coords, Transform matrixHolder, int x, int y, int z){
+        GameObject result = Instantiate(cubePrefab, coords, Quaternion.identity, matrixHolder);
+        CubeState cubeState = result.GetComponent<CubeState>();
+        if(cubeState != null){
+            cubeState.setcoordonates(x, y, z);
+        }
+        return result;
     }
 }
