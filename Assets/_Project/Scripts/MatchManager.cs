@@ -15,7 +15,6 @@ public class MatchManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("start");
         if(string.IsNullOrEmpty(_currentPlayerTurn)){
             _currentPlayerTurn = _player1.Name;
         }
@@ -30,7 +29,6 @@ public class MatchManager : MonoBehaviour
 
     public void EndTurn(){
         if(_currentPlayerTurn.Equals(_player1.Name)){
-            Debug.Log(_player2.Name);
             _currentPlayerTurn = _player2.Name;
         }
         else if(_currentPlayerTurn.Equals(_player2.Name)){

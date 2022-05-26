@@ -54,10 +54,13 @@ public class MatrixManager : MonoBehaviour
 
     public void razCubes()
     {
+        /*
         foreach(Transform cube in matrixHolder)
         {
             Destroy(cube.gameObject);
         }
+        */
+        deleteCube(0,0,0);
     }
 
     private GameObject CreateCubes(GameObject cubePrefab, Vector3 coords, Transform matrixHolder, int x, int y, int z){
@@ -67,5 +70,13 @@ public class MatrixManager : MonoBehaviour
             cubeState.setcoordonates(x, y, z);
         }
         return result;
+    }
+
+    public void deleteCube(int x, int y, int z){
+        GameObject cube = matrix[x][y][z];
+        if(cube != null){
+            matrix[x][y][z] = null;
+            Destroy(cube);
+        }
     }
 }
