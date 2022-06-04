@@ -1,30 +1,66 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class cameraHandler : MonoBehaviour
+public class CameraHandler : MonoBehaviour
 {
-    public float rotationSpeed = 3f;
-    public float displacementSpeed = 1f;
+    public float rotationSpeed = 0.3f;
+    public float displacementSpeed = 0.1f;
+    public float ZoomSpeed = 0.02f;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetMouseButton(1))
-        {
-            transform.eulerAngles += rotationSpeed * new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0f);
+    bool fistFrame = true;
+
+    PlayerControls playerControls;
+
+    private void Awake() {
+        playerControls = new PlayerControls();
+    }
+
+    private void OnEnable() {
+        playerControls.Player.Pan.performed += CheckPanAction;
+        playerControls.Player.Move.performed += CheckMoveAction;
+        playerControls.Player.Zoom.performed += CheckZoomAction;
+        playerControls.Player.Enable();
+    }
+
+    private void OnDisable() {
+        playerControls.Player.Pan.performed -= CheckPanAction;
+        playerControls.Player.Move.performed -= CheckMoveAction;
+        playerControls.Player.Zoom.performed -= CheckZoomAction;
+    }
+
+    private void CheckPanAction(InputAction.CallbackContext ctx){
+        //skip the first input 
+        if(fistFrame){
+            fistFrame = false;
+            return;
         }
-        if (Input.GetMouseButton(0))
-        {
-            transform.Translate(displacementSpeed * new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"), 0));
+        if(playerControls.Player.ActivatePan.IsPressed()){
+            PanObject(ctx);
         }
-        if (Input.mouseScrollDelta.y > 0)
-        {
-            transform.Translate(displacementSpeed * new Vector3(0f, 0f, displacementSpeed));
+    }
+
+    private void CheckMoveAction(InputAction.CallbackContext ctx){
+        if(playerControls.Player.ActivateMove.IsPressed()){
+            MoveObject(ctx);
         }
-        if (Input.mouseScrollDelta.y < 0)
-        {
-            transform.Translate(displacementSpeed * new Vector3(0f, 0f, -displacementSpeed));
-        }
+    }
+
+    private void CheckZoomAction(InputAction.CallbackContext ctx){
+        ZoomObject(ctx);
+    }
+
+    private void PanObject(InputAction.CallbackContext ctx){
+        Vector2 input = ctx.ReadValue<Vector2>();
+        transform.eulerAngles += rotationSpeed * new Vector3(-input.y, input.x, 0f);
+    }
+
+    private void MoveObject(InputAction.CallbackContext ctx){
+        Vector2 input = ctx.ReadValue<Vector2>();
+        transform.Translate(displacementSpeed * new Vector3(-input.x, -input.y, 0f));
+    }
+
+    private void ZoomObject(InputAction.CallbackContext ctx){
+        Vector2 input = ctx.ReadValue<Vector2>();
+        transform.Translate(ZoomSpeed * new Vector3(0f, 0f, input.y));
     }
 }

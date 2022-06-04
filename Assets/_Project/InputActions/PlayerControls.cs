@@ -44,6 +44,42 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""23637019-a9e8-433d-b64f-104f79ef9b92"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pan"",
+                    ""type"": ""Value"",
+                    ""id"": ""5f05ccc3-b4d9-43b4-8773-40bc90e1befa"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ActivatePan"",
+                    ""type"": ""Button"",
+                    ""id"": ""d27f6f37-7a84-477b-9869-3faeff7722dd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ActivateMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""fcd93134-f6b7-407a-98c7-50570c618417"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -51,17 +87,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""d3ea5a8a-1271-4eb1-954d-d019ffe49884"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a072f3bf-ea7f-41b3-8a09-b85600674b6a"",
-                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -79,6 +104,50 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c4c5a85-e068-4cc5-957f-66d0e598c668"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3191f16-d8a6-4d4c-a97c-53eae8789fe2"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b83d9d87-b2aa-467d-b56f-90023c11f8ed"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActivatePan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""693b9e94-0fab-4ab1-9740-94813aa773a9"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActivateMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -89,6 +158,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
+        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_Pan = m_Player.FindAction("Pan", throwIfNotFound: true);
+        m_Player_ActivatePan = m_Player.FindAction("ActivatePan", throwIfNotFound: true);
+        m_Player_ActivateMove = m_Player.FindAction("ActivateMove", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -150,12 +223,20 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Select;
     private readonly InputAction m_Player_Zoom;
+    private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_Pan;
+    private readonly InputAction m_Player_ActivatePan;
+    private readonly InputAction m_Player_ActivateMove;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Select => m_Wrapper.m_Player_Select;
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
+        public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @Pan => m_Wrapper.m_Player_Pan;
+        public InputAction @ActivatePan => m_Wrapper.m_Player_ActivatePan;
+        public InputAction @ActivateMove => m_Wrapper.m_Player_ActivateMove;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -171,6 +252,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Zoom.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
                 @Zoom.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
                 @Zoom.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnZoom;
+                @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Pan.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPan;
+                @Pan.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPan;
+                @Pan.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPan;
+                @ActivatePan.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivatePan;
+                @ActivatePan.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivatePan;
+                @ActivatePan.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivatePan;
+                @ActivateMove.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivateMove;
+                @ActivateMove.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivateMove;
+                @ActivateMove.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivateMove;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -181,6 +274,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Zoom.started += instance.OnZoom;
                 @Zoom.performed += instance.OnZoom;
                 @Zoom.canceled += instance.OnZoom;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @Pan.started += instance.OnPan;
+                @Pan.performed += instance.OnPan;
+                @Pan.canceled += instance.OnPan;
+                @ActivatePan.started += instance.OnActivatePan;
+                @ActivatePan.performed += instance.OnActivatePan;
+                @ActivatePan.canceled += instance.OnActivatePan;
+                @ActivateMove.started += instance.OnActivateMove;
+                @ActivateMove.performed += instance.OnActivateMove;
+                @ActivateMove.canceled += instance.OnActivateMove;
             }
         }
     }
@@ -189,5 +294,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     {
         void OnSelect(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
+        void OnPan(InputAction.CallbackContext context);
+        void OnActivatePan(InputAction.CallbackContext context);
+        void OnActivateMove(InputAction.CallbackContext context);
     }
 }
