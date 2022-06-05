@@ -39,6 +39,10 @@ public class ObjectSelection : MonoBehaviour
             Debug.Log("You selected the " + hit.transform.name + " with the tag : " + hit.transform.tag); 
             if(hit.transform.tag == CUBE_TAG){
                 Debug.Log("Nice cube you have here"); 
+                CubeState cubeState = hit.transform.GetComponentInParent<CubeState>();
+                if(cubeState != null){
+                    cubeState.HandleSelection();
+                }
             }
         }
     }

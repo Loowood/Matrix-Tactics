@@ -19,6 +19,9 @@ public class CubeState : MonoBehaviour
         Vertex
     }
 
+    [SerializeField] bool _isSelected = false;
+    public bool IsSelected => _isSelected;
+
     [SerializeField] Player _containedPlayer;
     public Player ContainedPlayer => _containedPlayer;
     public bool IsContainingPlayer => _containedPlayer != null;
@@ -49,6 +52,33 @@ public class CubeState : MonoBehaviour
     }
     public void setType(int type){
         _type = type;
+    }
+
+    public void HandleSelection(){
+        if(_isSelected == true){
+            UnSelectCube();
+            return;
+        }
+        if(_isSelected == false){
+            SelectCube();
+            return;
+        }
+    }
+
+    public void SelectCube(){
+        _isSelected = true;
+        Outline outline = transform.GetComponentInChildren<Outline>();
+        if(outline != null){
+            outline.enabled = true;
+        }
+    }
+
+    public void UnSelectCube(){
+        _isSelected = false;
+        Outline outline = transform.GetComponentInChildren<Outline>();
+        if(outline != null){
+            outline.enabled = false;
+        }
     }
 
 }
