@@ -41,7 +41,7 @@ public class ObjectSelection : MonoBehaviour
                 Debug.Log("Nice cube you have here"); 
                 CubeState cubeState = hit.transform.GetComponentInParent<CubeState>();
                 if(cubeState != null){
-                    cubeState.HandleSelection();
+                    SelectionEvent.current.CubeSelection(cubeState);
                 }
             }
         }

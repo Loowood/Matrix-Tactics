@@ -28,7 +28,11 @@ public class CubeState : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        SelectionEvent.current.OnCubeSelection += HandleSelection;
+    }
+
+    private void OnDestroy() {
+        SelectionEvent.current.OnCubeSelection -= HandleSelection;
     }
 
     // Update is called once per frame
@@ -54,7 +58,11 @@ public class CubeState : MonoBehaviour
         _type = type;
     }
 
-    public void HandleSelection(){
+    public void HandleSelection(CubeState cubeState){
+        if(cubeState != this){
+            UnSelectCube();
+            return;
+        }
         if(_isSelected == true){
             UnSelectCube();
             return;
